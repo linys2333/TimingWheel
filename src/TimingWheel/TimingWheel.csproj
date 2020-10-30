@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <PackageId>TimingWheel.Net</PackageId>
+    <Version>1.0.0</Version>
+    <Authors>linys2333</Authors>
+    <Description>分层时间轮算法，参考kafka TimingWheel实现</Description>
+    <PackageProjectUrl>https://github.com/linys2333/TimingWheel</PackageProjectUrl>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);1591</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="DelayQueue.Net" Version="1.0.1" />
+  </ItemGroup>
+
+</Project>

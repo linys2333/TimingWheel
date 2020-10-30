@@ -1,2 +1,2 @@
 # TimingWheel
-分层时间轮，参考kafka时间轮算法实现
+c#版分层时间轮算法，参考kafka TimingWheel实现
