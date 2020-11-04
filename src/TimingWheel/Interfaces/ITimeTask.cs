@@ -11,8 +11,13 @@
         long TimeoutMs { get; }
 
         /// <summary>
+        /// 任务状态
+        /// </summary>
+        TimeTaskStaus TaskStaus { get; }
+
+        /// <summary>
         /// 取消任务
         /// </summary>
-        void Cancel();
+        bool Cancel();
     }
 }

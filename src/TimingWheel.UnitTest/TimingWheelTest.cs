@@ -2,6 +2,7 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace TimingWheel.UnitTest
@@ -13,6 +14,10 @@ namespace TimingWheel.UnitTest
         {
         }
 
+        /// <summary>
+        /// ≤‚ ‘ ±º‰¬÷
+        /// </summary>
+        /// <returns></returns>
         [Test]
         public async Task TestTimingWheel()
         {
@@ -43,6 +48,37 @@ namespace TimingWheel.UnitTest
             Assert.AreEqual(2, Calc(outputs.Skip(2).First().Value, outputs.First().Value));
             Assert.AreEqual(5, Calc(outputs.Skip(3).First().Value, outputs.First().Value));
             Assert.AreEqual(12, Calc(outputs.Skip(4).First().Value, outputs.First().Value));
+        }
+
+        /// <summary>
+        /// ≤‚ ‘»ŒŒÒ◊¥Ã¨
+        /// </summary>
+        /// <returns></returns>
+        [Test]
+        public async Task TestTaskStatus()
+        {
+            var timer = TimingWheelTimer.Build(TimeSpan.FromSeconds(1), 10);
+            timer.Start();
+
+            var task1 = timer.AddTask(TimeSpan.FromSeconds(5), () => { Thread.Sleep(3000); });
+            var task2 = timer.AddTask(TimeSpan.FromSeconds(5), () => { throw new Exception(); });
+            var task3 = timer.AddTask(TimeSpan.FromSeconds(5), () => { throw new Exception(); });
+
+            Assert.AreEqual(TimeTaskStaus.Wait, task1.TaskStaus);
+            Assert.AreEqual(TimeTaskStaus.Wait, task2.TaskStaus);
+            Assert.AreEqual(TimeTaskStaus.Wait, task3.TaskStaus);
+
+            task3.Cancel();
+            await Task.Delay(TimeSpan.FromSeconds(6));
+
+            Assert.AreEqual(TimeTaskStaus.Running, task1.TaskStaus);
+            Assert.AreEqual(TimeTaskStaus.Fail, task2.TaskStaus);
+            Assert.AreEqual(TimeTaskStaus.Cancel, task3.TaskStaus);
+
+            await Task.Delay(TimeSpan.FromSeconds(4));
+            Assert.AreEqual(TimeTaskStaus.Success, task1.TaskStaus);
+
+            timer.Stop();
         }
 
         private static int Calc(DateTime dt1, DateTime dt2)

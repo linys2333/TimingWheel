@@ -25,10 +25,16 @@ namespace TimingWheel
         public volatile TimeSlot TimeSlot;
 
         /// <summary>
-        /// 任务是否已结束
+        /// 任务状态
         /// </summary>
-        public bool IsEnd => _isEnd;
-        private volatile bool _isEnd;
+        public TimeTaskStaus TaskStaus { get; private set; } = TimeTaskStaus.Wait;
+
+        /// <summary>
+        /// 任务是否等待中
+        /// </summary>
+        public bool IsWaiting => TaskStaus == TimeTaskStaus.Wait;
+
+        private readonly object _lock = new object();
 
         /// <summary>
         /// 
@@ -57,24 +63,56 @@ namespace TimingWheel
         /// </summary>
         public void Run()
         {
-            if (!_isEnd)
+            if (!IsWaiting)
             {
-                _isEnd = true;
-                Remove();
-                DelayTask();
+                return;
+            }
+
+            lock (_lock)
+            {
+                if (IsWaiting)
+                {
+                    TaskStaus = TimeTaskStaus.Running;
+                    Remove();
+                }
+            }
+
+            if (TaskStaus == TimeTaskStaus.Running)
+            {
+                try
+                {
+                    DelayTask();
+                    TaskStaus = TimeTaskStaus.Success;
+                }
+                catch
+                {
+                    // 由DelayTask内部处理异常，这里不处理
+                    TaskStaus = TimeTaskStaus.Fail;
+                }
             }
         }
 
         /// <summary>
         /// 取消任务
         /// </summary>
-        public void Cancel()
+        public bool Cancel()
         {
-            if (!_isEnd)
+            if (!IsWaiting)
             {
-                _isEnd = true;
-                Remove();
+                return false;
             }
+
+            lock (_lock)
+            {
+                if (IsWaiting)
+                {
+                    TaskStaus = TimeTaskStaus.Cancel;
+                    Remove();
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         /// <summary>

@@ -221,7 +221,7 @@ namespace TimingWheel
             // 添加失败，说明该任务已到期，需要执行了
             if (!_timingWheel.AddTask(timeTask))
             {
-                if (!timeTask.IsEnd)
+                if (timeTask.IsWaiting)
                 {
                     // TODO：是否放入自定义线程池
                     Task.Run(timeTask.Run);

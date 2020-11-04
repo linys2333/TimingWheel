@@ -87,7 +87,7 @@ namespace TimingWheel
         /// <returns></returns>
         public bool AddTask(TimeTask task)
         {
-            if (task.IsEnd)
+            if (!task.IsWaiting)
             {
                 return false;
             }
