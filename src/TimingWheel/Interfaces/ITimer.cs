@@ -2,6 +2,9 @@
 
 namespace TimingWheel.Interfaces
 {
+    /// <summary>
+    /// 时间轮计时器
+    /// </summary>
     public interface ITimer
     {
         /// <summary>

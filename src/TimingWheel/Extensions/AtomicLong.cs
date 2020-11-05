@@ -21,7 +21,7 @@ namespace TimingWheel.Extensions
         /// <returns></returns>
         public long Get()
         {
-            // long是64位整型，在64位系统中读取是原子操作，但32位系统不是，所有这里统一用Read原子读
+            // long是64位整型，在64位系统中读取是原子操作，但32位系统不是，所以这里统一用Read原子读
             return Interlocked.Read(ref _value);
         }
 
