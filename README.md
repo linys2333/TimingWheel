@@ -1,6 +1,6 @@
 # TimingWheel
 
-C#版分层时间轮算法，参考kafka TimingWheel实现。
+C#版分层时间轮算法，参考 [kafka TimingWheel](https://github.com/apache/kafka/tree/trunk/core/src/main/scala/kafka/utils/timer) 实现。
 
 ## NuGet
 
