@@ -27,14 +27,14 @@ var task2 = timer.AddTask(TimeSpan.FromSeconds(5), () =>
     throw new Exception();
 });
 
-Console.WriteLine($"{DateTime.Now}, Task1: {task1.TaskStaus}");
-Console.WriteLine($"{DateTime.Now}, Task2: {task2.TaskStaus}");
+Console.WriteLine($"{DateTime.Now}, Task1: {task1.TaskStatus}");
+Console.WriteLine($"{DateTime.Now}, Task2: {task2.TaskStatus}");
 
 // 等待到期执行
 await Task.Delay(TimeSpan.FromSeconds(6));
 
-Console.WriteLine($"{DateTime.Now}, Task1: {task1.TaskStaus}");
-Console.WriteLine($"{DateTime.Now}, Task2: {task2.TaskStaus}");
+Console.WriteLine($"{DateTime.Now}, Task1: {task1.TaskStatus}");
+Console.WriteLine($"{DateTime.Now}, Task2: {task2.TaskStatus}");
 
 timer.Stop();
 
