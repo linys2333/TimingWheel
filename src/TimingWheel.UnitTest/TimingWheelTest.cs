@@ -64,19 +64,19 @@ namespace TimingWheel.UnitTest
             var task2 = timer.AddTask(TimeSpan.FromSeconds(5), () => { throw new Exception(); });
             var task3 = timer.AddTask(TimeSpan.FromSeconds(5), () => { throw new Exception(); });
 
-            Assert.AreEqual(TimeTaskStaus.Wait, task1.TaskStaus);
-            Assert.AreEqual(TimeTaskStaus.Wait, task2.TaskStaus);
-            Assert.AreEqual(TimeTaskStaus.Wait, task3.TaskStaus);
+            Assert.AreEqual(TimeTaskStatus.Wait, task1.TaskStatus);
+            Assert.AreEqual(TimeTaskStatus.Wait, task2.TaskStatus);
+            Assert.AreEqual(TimeTaskStatus.Wait, task3.TaskStatus);
 
             task3.Cancel();
             await Task.Delay(TimeSpan.FromSeconds(6));
 
-            Assert.AreEqual(TimeTaskStaus.Running, task1.TaskStaus);
-            Assert.AreEqual(TimeTaskStaus.Fail, task2.TaskStaus);
-            Assert.AreEqual(TimeTaskStaus.Cancel, task3.TaskStaus);
+            Assert.AreEqual(TimeTaskStatus.Running, task1.TaskStatus);
+            Assert.AreEqual(TimeTaskStatus.Fail, task2.TaskStatus);
+            Assert.AreEqual(TimeTaskStatus.Cancel, task3.TaskStatus);
 
             await Task.Delay(TimeSpan.FromSeconds(4));
-            Assert.AreEqual(TimeTaskStaus.Success, task1.TaskStaus);
+            Assert.AreEqual(TimeTaskStatus.Success, task1.TaskStatus);
 
             timer.Stop();
         }

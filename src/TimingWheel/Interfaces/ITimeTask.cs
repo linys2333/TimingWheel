@@ -13,7 +13,7 @@
         /// <summary>
         /// 任务状态
         /// </summary>
-        TimeTaskStaus TaskStaus { get; }
+        TimeTaskStatus TaskStatus { get; }
 
         /// <summary>
         /// 取消任务

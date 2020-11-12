@@ -27,12 +27,12 @@ namespace TimingWheel
         /// <summary>
         /// 任务状态
         /// </summary>
-        public TimeTaskStaus TaskStaus { get; private set; } = TimeTaskStaus.Wait;
+        public TimeTaskStatus TaskStatus { get; private set; } = TimeTaskStatus.Wait;
 
         /// <summary>
         /// 任务是否等待中
         /// </summary>
-        public bool IsWaiting => TaskStaus == TimeTaskStaus.Wait;
+        public bool IsWaiting => TaskStatus == TimeTaskStatus.Wait;
 
         private readonly object _lock = new object();
 
@@ -72,22 +72,22 @@ namespace TimingWheel
             {
                 if (IsWaiting)
                 {
-                    TaskStaus = TimeTaskStaus.Running;
+                    TaskStatus = TimeTaskStatus.Running;
                     Remove();
                 }
             }
 
-            if (TaskStaus == TimeTaskStaus.Running)
+            if (TaskStatus == TimeTaskStatus.Running)
             {
                 try
                 {
                     DelayTask();
-                    TaskStaus = TimeTaskStaus.Success;
+                    TaskStatus = TimeTaskStatus.Success;
                 }
                 catch
                 {
                     // 由DelayTask内部处理异常，这里不处理
-                    TaskStaus = TimeTaskStaus.Fail;
+                    TaskStatus = TimeTaskStatus.Fail;
                 }
             }
         }
@@ -106,7 +106,7 @@ namespace TimingWheel
             {
                 if (IsWaiting)
                 {
-                    TaskStaus = TimeTaskStaus.Cancel;
+                    TaskStatus = TimeTaskStatus.Cancel;
                     Remove();
                     return true;
                 }

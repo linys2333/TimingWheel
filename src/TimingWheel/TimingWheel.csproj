@@ -3,12 +3,15 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <PackageId>TimingWheel.Net</PackageId>
-    <Version>1.0.1</Version>
+    <Version>1.0.2</Version>
     <Authors>linys2333</Authors>
     <Description>分层时间轮算法，参考kafka TimingWheel实现。
 
 v1.0.1更新内容：
 1、细分任务状态
+
+v1.0.2更新内容：
+1、sorry，拼写错误：TimeTaskStaus -> TimeTaskStatus
     </Description>
     <PackageProjectUrl>https://github.com/linys2333/TimingWheel</PackageProjectUrl>
   </PropertyGroup>

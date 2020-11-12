@@ -3,7 +3,7 @@
     /// <summary>
     /// 任务状态
     /// </summary>
-    public enum TimeTaskStaus
+    public enum TimeTaskStatus
     {
         /// <summary>
         /// 等待中

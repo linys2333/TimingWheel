@@ -56,3 +56,6 @@ timer.Stop();
 
 v1.0.1更新内容：  
 1、细分任务状态
+
+v1.0.2更新内容：  
+1、sorry，拼写错误：TimeTaskStaus -> TimeTaskStatus
