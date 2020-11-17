@@ -114,7 +114,21 @@ namespace TimingWheel
                 var slotTimeoutMs = tickCount * _tickSpan;
                 if (slot.SetExpiration(slotTimeoutMs))
                 {
+                    // 注意这里有个特殊情况：
+                    // slotTimeoutMs是按照tickSpan裁剪得到的值，可能会小于当前时间，
+                    // 意味着这里入队的slot已经超时，TimingWheelTimer会将该slot立即出队。
                     _delayQueue.TryAdd(slot);
+
+                    /*
+                    举个例子，需要结合TimingWheelTimer.Step方法来分析：
+                    假如第1层时间轮是秒级（1s 60个槽），那么第2层时间轮就是分钟级（60s 60个槽），第3层时间轮是小时级（3600s，60个槽）；
+                    第1层时间轮启动时间是12点钟（currentNeedle=12:00:00），1小时1分后（当前时间13:01:00）加入第1个延时任务，延时时间是1s；
+                    该任务TimeoutMs是13:01:01，虽然是1s后过期，但由于currentNeedle=12:00:00，所以计算后实际会进入第3层时间轮；
+                    在第3层时间轮计算得到的slotTimeoutMs为13:00:00，已过期，所以solt在入队后又会立即出队（由TimingWheelTimer.Step.TryTake处理）；
+                    那么出队后重新计算，第1层时间轮的currentNeedle会变成13:00:00，所以计算后任务会进入第2层时间轮；
+                    在第2层时间轮计算得到的slotTimeoutMs为13:01:00，还是过期，所以solt在入队后又会立即出队（由TimingWheelTimer.Step.TryTakeNoBlocking处理）；
+                    那么出队后重新计算，第1层时间轮的currentNeedle会变成13:01:00，延时任务将留在第1层时间轮，等待1s后过期。
+                    */
                 }
 
                 return true;

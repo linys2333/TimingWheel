@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using TimingWheel.Extensions;
 
 namespace TimingWheel.UnitTest
 {
@@ -23,8 +24,8 @@ namespace TimingWheel.UnitTest
         {
             var outputs = new Dictionary<string, DateTime>();
 
-            // 秒级时间轮
-            var timer = TimingWheelTimer.Build(TimeSpan.FromSeconds(1), 10);
+            // 秒级时间轮，设置起始时间为1小时前
+            var timer = TimingWheelTimer.Build(TimeSpan.FromSeconds(1), 10, DateTimeHelper.GetTimestamp() - 3600 * 1000);
 
             outputs.Add("00", DateTime.Now);
 

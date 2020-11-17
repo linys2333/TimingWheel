@@ -13,7 +13,7 @@ namespace TimingWheel
         /// <summary>
         /// 过期时间戳，标识该时间槽的过期时间
         /// </summary>
-        public AtomicLong TimeoutMs { get; private set; } = new AtomicLong();
+        public AtomicLong TimeoutMs { get; } = new AtomicLong();
 
         /// <summary>
         /// 总任务数

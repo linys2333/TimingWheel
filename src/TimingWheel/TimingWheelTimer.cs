@@ -163,7 +163,7 @@ namespace TimingWheel
             {
                 while (!token.IsCancellationRequested)
                 {
-                    Setp(token);
+                    Step(token);
                 }
             }
             catch (Exception e)
@@ -181,7 +181,7 @@ namespace TimingWheel
         /// 推进时间轮
         /// </summary>
         /// <param name="token"></param>
-        private void Setp(CancellationToken token)
+        private void Step(CancellationToken token)
         {
             // 阻塞式获取，到期的时间槽才会出队
             if (_delayQueue.TryTake(out var slot, token))
@@ -194,11 +194,11 @@ namespace TimingWheel
                         // 推进时间轮
                         _timingWheel.Step(slot.TimeoutMs.Get());
 
-                        // 到期的任务会重新添加进时间轮，那么下一层时间轮的任务重新计算后可能会进入上层时间轮
-                        // 这样就实现了任务在时间轮中的传递，由大精度的时间轮进入小精度的时间轮
+                        // 到期的任务会重新添加进时间轮，那么下一层时间轮的任务重新计算后可能会进入上层时间轮。
+                        // 这样就实现了任务在时间轮中的传递，由大精度的时间轮进入小精度的时间轮。
                         slot.Flush(AddTask);
 
-                        // 如果下一项也过期了或者当前项重新入队，就继续处理，直到没有过期项
+                        // Flush之后可能有新的slot入队，可能仍旧过期，因此尝试继续处理，直到没有过期项。
                         if (!_delayQueue.TryTakeNoBlocking(out slot))
                         {
                             break;

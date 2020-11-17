@@ -59,3 +59,6 @@ v1.0.1更新内容：
 
 v1.0.2更新内容：  
 1、sorry，拼写错误：TimeTaskStaus -> TimeTaskStatus
+
+v1.0.3更新内容：  
+1、修复时间槽入队时的临界值bug
